@@ -1,7 +1,6 @@
 const express = require("express");
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
 const path = require('path');
+const {swaggerDocs: v1SwaggerDocs} = require('./swagger');
 const fs = require('fs').promises;
 const { Pool } = require("pg");
 const app = express();
@@ -10,34 +9,6 @@ app.use(express.json());
 const port = 3000;
 
 require("dotenv").config();
-
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "database Cv",
-      version: "1.0.0",
-    },
-  },
-  apis: ["dataBaseCv.js"],
-};
-
-const specs = swaggerJsdoc(options);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
-
-app.get("/", (req, res) => {
-  res.send("!Thank you for visiting our api-docs here you can test the different functions of our cv api!");
-});
-/**
- * @swagger
- * /:
- *   get:
- *     summary: Thank you for visiting 
- *       my api we will be uploading new data
- *     responses:
- *       200:
- *         description: we thank you for your attention
- */
 
 // Define your API key
 const apiKey = process.env.API_KEY || "bUMx6Ir4dWch"; // Puedes definir la API key en el archivo .env
@@ -388,8 +359,9 @@ app.get("/users", async (req, res) => {
  *               error: Internal Server Error
  */
   
-  module.exports = app;
+module.exports = app;
 
 app.listen(port, function () {
   console.log(`the student server is working`);
+  v1SwaggerDocs(app, port);
 });
