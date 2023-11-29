@@ -1,0 +1,7 @@
+{
+    "version": 2,
+    "builds": [{ "src": "dataBaseCv.js", "use": "@now/node" }],
+    "routes": [{
+      "src": "/(.*)", "dest": "dataBaseCv.js" }
+    ]
+}
